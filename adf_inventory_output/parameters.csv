@@ -1,0 +1,4 @@
+Scope,Pipeline Name,Parameter Name,Type,Default Value,Description
+Pipeline,pl_incremental_load,source_table,String,,
+Pipeline,pl_incremental_load,watermark_column,String,modified_date,
+Pipeline,pl_orchestrator_daily,alert_webhook_url,String,,

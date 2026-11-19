@@ -1,0 +1,4 @@
+Complexity,Complexity Reason,Pipeline Name,Description,Folder,Activity Count,Activity Types,Parameter Count,Variable Count,Concurrency,Annotations,Last Publish Time
+SIMPLE,simple linear pipeline,pl_data_quality_checks,Post-load data quality validation with operator-driven rule evaluation and centralized result logging,Root,2,"ForEach, Lookup",0,0,N/A,"data-quality, template, validation",N/A
+MEDIUM,5 activities (5-14),pl_incremental_load,Incremental load from source to Snowflake staging via watermark pattern,Root,5,"Copy, Lookup, SqlServerStoredProcedure",2,0,N/A,"incremental, production, snowflake",N/A
+SIMPLE,simple linear pipeline,pl_orchestrator_daily,"Daily orchestrator pipeline with dependency management, error handling, and alerting",Root,4,"ExecutePipeline, ForEach, Lookup, WebActivity",1,0,N/A,"orchestrator, production, daily",N/A

@@ -1,0 +1,17 @@
+Resource Type,Name / ID,Complexity,Complexity Reason
+Pipelines,pl_data_quality_checks,SIMPLE,simple linear pipeline
+Pipelines,pl_incremental_load,MEDIUM,5 activities (5-14)
+Pipelines,pl_orchestrator_daily,SIMPLE,simple linear pipeline
+Activities,GetDQRules,MEDIUM,type: lookup; retries=2; custom timeout
+Activities,ForEachRule,MEDIUM,type: foreach; 1 dependency
+Activities,LookupLastWatermark,MEDIUM,type: lookup; retries=2; custom timeout
+Activities,LookupCurrentWatermark,MEDIUM,type: lookup; retries=2; custom timeout
+Activities,CopyIncrementalData,MEDIUM,2 dependency; retries=3; custom timeout
+Activities,UpdateWatermark,MEDIUM,1 dependency; retries=2; custom timeout
+Activities,LogPipelineSuccess,MEDIUM,1 dependency
+Activities,GetPipelineConfig,MEDIUM,type: lookup; retries=1; custom timeout
+Activities,ForEachPipeline,MEDIUM,type: foreach; 1 dependency
+Activities,RunDataQualityChecks,COMPLEX,type: executepipeline
+Activities,OnFailure_SendAlert,COMPLEX,type: webactivity
+Linked Services,,SIMPLE,simple cloud linked service
+Triggers,tr_daily_0600_utc,SIMPLE,simple schedule trigger

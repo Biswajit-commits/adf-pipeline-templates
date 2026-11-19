@@ -1,0 +1,2 @@
+Factory Name,Resource Group,Subscription ID,Location,State,Create Time,Purview Account,Git Config Enabled,Repo Type,Repo Name,Branch,Global Parameters,Public Network Access,Tags
+ADFAccenLulu,N/A (from Git),N/A (from Git),N/A,N/A (from Git),N/A,N/A,Yes,Git (workspace),ADF_Pipelines,main,0,Enabled,{}

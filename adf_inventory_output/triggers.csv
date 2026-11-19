@@ -1,0 +1,2 @@
+Complexity,Complexity Reason,Trigger Name,Type,Description,Runtime State,Schedule,Start Time,End Time,Timezone,Pipeline Count,Pipelines,Annotations
+SIMPLE,simple schedule trigger,tr_daily_0600_utc,ScheduleTrigger,,N/A,Every 1 Day,2025-01-01 06:00:00,N/A,UTC,1,pl_orchestrator_daily,"daily, template, orchestration"

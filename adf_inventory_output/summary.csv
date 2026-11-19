@@ -1,0 +1,12 @@
+Resource Type,Count,Simple,Medium,Complex
+Factory Info,1,0,0,0
+Pipelines,3,2,1,0
+Activities,11,0,9,2
+Data Flows,0,0,0,0
+Flowlets,1,0,0,0
+Datasets,0,0,0,0
+Linked Services,1,1,0,0
+Integration Runtimes,0,0,0,0
+Triggers,1,1,0,0
+Parameters,3,0,0,0
+Variables,1,0,0,0

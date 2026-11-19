@@ -1,0 +1,477 @@
+{
+  "Factory Info": [
+    {
+      "Factory Name": "ADFAccenLulu",
+      "Resource Group": "N/A (from Git)",
+      "Subscription ID": "N/A (from Git)",
+      "Location": "N/A",
+      "State": "N/A (from Git)",
+      "Create Time": "N/A",
+      "Purview Account": "N/A",
+      "Git Config Enabled": "Yes",
+      "Repo Type": "Git (workspace)",
+      "Repo Name": "ADF_Pipelines",
+      "Branch": "main",
+      "Global Parameters": 0,
+      "Public Network Access": "Enabled",
+      "Tags": "{}"
+    }
+  ],
+  "Pipelines": [
+    {
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple linear pipeline",
+      "Pipeline Name": "pl_data_quality_checks",
+      "Description": "Post-load data quality validation with operator-driven rule evaluation and centralized result logging",
+      "Folder": "Root",
+      "Activity Count": 2,
+      "Activity Types": "ForEach, Lookup",
+      "Parameter Count": 0,
+      "Variable Count": 0,
+      "Concurrency": "N/A",
+      "Annotations": "data-quality, template, validation",
+      "Last Publish Time": "N/A"
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "5 activities (5-14)",
+      "Pipeline Name": "pl_incremental_load",
+      "Description": "Incremental load from source to Snowflake staging via watermark pattern",
+      "Folder": "Root",
+      "Activity Count": 5,
+      "Activity Types": "Copy, Lookup, SqlServerStoredProcedure",
+      "Parameter Count": 2,
+      "Variable Count": 0,
+      "Concurrency": "N/A",
+      "Annotations": "incremental, production, snowflake",
+      "Last Publish Time": "N/A"
+    },
+    {
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple linear pipeline",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Description": "Daily orchestrator pipeline with dependency management, error handling, and alerting",
+      "Folder": "Root",
+      "Activity Count": 4,
+      "Activity Types": "ExecutePipeline, ForEach, Lookup, WebActivity",
+      "Parameter Count": 1,
+      "Variable Count": 0,
+      "Concurrency": "N/A",
+      "Annotations": "orchestrator, production, daily",
+      "Last Publish Time": "N/A"
+    }
+  ],
+  "Activities": [
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout",
+      "Pipeline Name": "pl_data_quality_checks",
+      "Activity Name": "GetDQRules",
+      "Activity Type": "Lookup",
+      "Description": "",
+      "Depends On": "",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "00:05:00",
+      "Policy Retries": 2
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: foreach; 1 dependency",
+      "Pipeline Name": "pl_data_quality_checks",
+      "Activity Name": "ForEachRule",
+      "Activity Type": "ForEach",
+      "Description": "",
+      "Depends On": "GetDQRules",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "",
+      "Policy Retries": ""
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout",
+      "Pipeline Name": "pl_incremental_load",
+      "Activity Name": "LookupLastWatermark",
+      "Activity Type": "Lookup",
+      "Description": "",
+      "Depends On": "",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "00:05:00",
+      "Policy Retries": 2
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout",
+      "Pipeline Name": "pl_incremental_load",
+      "Activity Name": "LookupCurrentWatermark",
+      "Activity Type": "Lookup",
+      "Description": "",
+      "Depends On": "",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "00:05:00",
+      "Policy Retries": 2
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "2 dependency; retries=3; custom timeout",
+      "Pipeline Name": "pl_incremental_load",
+      "Activity Name": "CopyIncrementalData",
+      "Activity Type": "Copy",
+      "Description": "",
+      "Depends On": "LookupLastWatermark, LookupCurrentWatermark",
+      "Input Datasets": "ds_source_db",
+      "Output Datasets": "ds_snowflake_staging",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "01:00:00",
+      "Policy Retries": 3
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "1 dependency; retries=2; custom timeout",
+      "Pipeline Name": "pl_incremental_load",
+      "Activity Name": "UpdateWatermark",
+      "Activity Type": "SqlServerStoredProcedure",
+      "Description": "",
+      "Depends On": "CopyIncrementalData",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "ls_control_db",
+      "Notes": "",
+      "Policy Timeout": "00:05:00",
+      "Policy Retries": 2
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "1 dependency",
+      "Pipeline Name": "pl_incremental_load",
+      "Activity Name": "LogPipelineSuccess",
+      "Activity Type": "SqlServerStoredProcedure",
+      "Description": "",
+      "Depends On": "UpdateWatermark",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "ls_control_db",
+      "Notes": "",
+      "Policy Timeout": "",
+      "Policy Retries": ""
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=1; custom timeout",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Activity Name": "GetPipelineConfig",
+      "Activity Type": "Lookup",
+      "Description": "",
+      "Depends On": "",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "00:05:00",
+      "Policy Retries": 1
+    },
+    {
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: foreach; 1 dependency",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Activity Name": "ForEachPipeline",
+      "Activity Type": "ForEach",
+      "Description": "",
+      "Depends On": "GetPipelineConfig",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "",
+      "Policy Timeout": "",
+      "Policy Retries": ""
+    },
+    {
+      "Complexity": "COMPLEX",
+      "Complexity Reason": "type: executepipeline",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Activity Name": "RunDataQualityChecks",
+      "Activity Type": "ExecutePipeline",
+      "Description": "",
+      "Depends On": "ForEachPipeline",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "calls=pl_data_quality_checks",
+      "Policy Timeout": "",
+      "Policy Retries": ""
+    },
+    {
+      "Complexity": "COMPLEX",
+      "Complexity Reason": "type: webactivity",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Activity Name": "OnFailure_SendAlert",
+      "Activity Type": "WebActivity",
+      "Description": "",
+      "Depends On": "ForEachPipeline",
+      "Input Datasets": "",
+      "Output Datasets": "",
+      "Linked Service": "",
+      "Notes": "url=@{pipeline().parameters.alert_webhook_url}",
+      "Policy Timeout": "",
+      "Policy Retries": ""
+    }
+  ],
+  "Data Flows": [],
+  "Flowlets": [
+    {
+      "Note": "No Flowlets found in this factory."
+    }
+  ],
+  "Datasets": [],
+  "Linked Services": [
+    {
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple cloud linked service",
+      "Linked Service Name": null,
+      "Type": "",
+      "Description": "",
+      "Integration Runtime": "AutoResolve",
+      "Parameter Count": 0,
+      "Connection Properties": "",
+      "Annotations": ""
+    }
+  ],
+  "Integration Runtimes": [],
+  "Triggers": [
+    {
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple schedule trigger",
+      "Trigger Name": "tr_daily_0600_utc",
+      "Type": "ScheduleTrigger",
+      "Description": "",
+      "Runtime State": "N/A",
+      "Schedule": "Every 1 Day",
+      "Start Time": "2025-01-01 06:00:00",
+      "End Time": "N/A",
+      "Timezone": "UTC",
+      "Pipeline Count": 1,
+      "Pipelines": "pl_orchestrator_daily",
+      "Annotations": "daily, template, orchestration"
+    }
+  ],
+  "Parameters": [
+    {
+      "Scope": "Pipeline",
+      "Pipeline Name": "pl_incremental_load",
+      "Parameter Name": "source_table",
+      "Type": "String",
+      "Default Value": "",
+      "Description": ""
+    },
+    {
+      "Scope": "Pipeline",
+      "Pipeline Name": "pl_incremental_load",
+      "Parameter Name": "watermark_column",
+      "Type": "String",
+      "Default Value": "modified_date",
+      "Description": ""
+    },
+    {
+      "Scope": "Pipeline",
+      "Pipeline Name": "pl_orchestrator_daily",
+      "Parameter Name": "alert_webhook_url",
+      "Type": "String",
+      "Default Value": "",
+      "Description": ""
+    }
+  ],
+  "Variables": [
+    {
+      "Note": "No pipeline variables found."
+    }
+  ],
+  "Summary": [
+    {
+      "Resource Type": "Factory Info",
+      "Count": 1,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Pipelines",
+      "Count": 3,
+      "Simple": 2,
+      "Medium": 1,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Activities",
+      "Count": 11,
+      "Simple": 0,
+      "Medium": 9,
+      "Complex": 2
+    },
+    {
+      "Resource Type": "Data Flows",
+      "Count": 0,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Flowlets",
+      "Count": 1,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Datasets",
+      "Count": 0,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Linked Services",
+      "Count": 1,
+      "Simple": 1,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Integration Runtimes",
+      "Count": 0,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Triggers",
+      "Count": 1,
+      "Simple": 1,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Parameters",
+      "Count": 3,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "Variables",
+      "Count": 1,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    }
+  ],
+  "Classification Overview": [
+    {
+      "Resource Type": "Pipelines",
+      "Name / ID": "pl_data_quality_checks",
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple linear pipeline"
+    },
+    {
+      "Resource Type": "Pipelines",
+      "Name / ID": "pl_incremental_load",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "5 activities (5-14)"
+    },
+    {
+      "Resource Type": "Pipelines",
+      "Name / ID": "pl_orchestrator_daily",
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple linear pipeline"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "GetDQRules",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "ForEachRule",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: foreach; 1 dependency"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "LookupLastWatermark",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "LookupCurrentWatermark",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=2; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "CopyIncrementalData",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "2 dependency; retries=3; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "UpdateWatermark",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "1 dependency; retries=2; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "LogPipelineSuccess",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "1 dependency"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "GetPipelineConfig",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: lookup; retries=1; custom timeout"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "ForEachPipeline",
+      "Complexity": "MEDIUM",
+      "Complexity Reason": "type: foreach; 1 dependency"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "RunDataQualityChecks",
+      "Complexity": "COMPLEX",
+      "Complexity Reason": "type: executepipeline"
+    },
+    {
+      "Resource Type": "Activities",
+      "Name / ID": "OnFailure_SendAlert",
+      "Complexity": "COMPLEX",
+      "Complexity Reason": "type: webactivity"
+    },
+    {
+      "Resource Type": "Linked Services",
+      "Name / ID": "",
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple cloud linked service"
+    },
+    {
+      "Resource Type": "Triggers",
+      "Name / ID": "tr_daily_0600_utc",
+      "Complexity": "SIMPLE",
+      "Complexity Reason": "simple schedule trigger"
+    }
+  ]
+}

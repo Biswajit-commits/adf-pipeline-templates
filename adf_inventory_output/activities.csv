@@ -1,0 +1,12 @@
+Complexity,Complexity Reason,Pipeline Name,Activity Name,Activity Type,Description,Depends On,Input Datasets,Output Datasets,Linked Service,Notes,Policy Timeout,Policy Retries
+MEDIUM,type: lookup; retries=2; custom timeout,pl_data_quality_checks,GetDQRules,Lookup,,,,,,,00:05:00,2
+MEDIUM,type: foreach; 1 dependency,pl_data_quality_checks,ForEachRule,ForEach,,GetDQRules,,,,,,
+MEDIUM,type: lookup; retries=2; custom timeout,pl_incremental_load,LookupLastWatermark,Lookup,,,,,,,00:05:00,2
+MEDIUM,type: lookup; retries=2; custom timeout,pl_incremental_load,LookupCurrentWatermark,Lookup,,,,,,,00:05:00,2
+MEDIUM,2 dependency; retries=3; custom timeout,pl_incremental_load,CopyIncrementalData,Copy,,"LookupLastWatermark, LookupCurrentWatermark",ds_source_db,ds_snowflake_staging,,,01:00:00,3
+MEDIUM,1 dependency; retries=2; custom timeout,pl_incremental_load,UpdateWatermark,SqlServerStoredProcedure,,CopyIncrementalData,,,ls_control_db,,00:05:00,2
+MEDIUM,1 dependency,pl_incremental_load,LogPipelineSuccess,SqlServerStoredProcedure,,UpdateWatermark,,,ls_control_db,,,
+MEDIUM,type: lookup; retries=1; custom timeout,pl_orchestrator_daily,GetPipelineConfig,Lookup,,,,,,,00:05:00,1
+MEDIUM,type: foreach; 1 dependency,pl_orchestrator_daily,ForEachPipeline,ForEach,,GetPipelineConfig,,,,,,
+COMPLEX,type: executepipeline,pl_orchestrator_daily,RunDataQualityChecks,ExecutePipeline,,ForEachPipeline,,,,calls=pl_data_quality_checks,,
+COMPLEX,type: webactivity,pl_orchestrator_daily,OnFailure_SendAlert,WebActivity,,ForEachPipeline,,,,url=@{pipeline().parameters.alert_webhook_url},,
