@@ -1,0 +1,10 @@
+{
+  "pipeline": {"medium_activities": 5, "complex_activities": 15, "medium_parameters": 5, "medium_variables": 5},
+  "activity": {
+    "complex_dependencies": 3,
+    "complex_types": ["ExecutePipeline", "ExecuteDataFlow", "Databricks", "HDInsight", "Custom", "AzureFunction", "WebActivity", "Script"],
+    "medium_types": ["Lookup", "GetMetadata", "Filter", "ForEach", "Until", "IfCondition", "Switch", "Wait", "SetVariable"]
+  },
+  "dataflow": {"medium_transformations": 4, "complex_transformations": 10, "complex_script_lines": 200},
+  "dataset": {"medium_schema_columns": 10, "complex_schema_columns": 30}
+}

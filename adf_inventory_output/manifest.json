@@ -1,0 +1,81 @@
+{
+  "framework_version": "2.0.0",
+  "generated_at": "2026-11-19T15:35:16.517566+00:00",
+  "repository_root": "/filesystem/cc0061016b6c46b87d11986dd1e5b37d6231ed03c8e42b625b82cf1705a95cf5",
+  "detected_adf_roots": [
+    "."
+  ],
+  "resource_file_count": 5,
+  "summary": [
+    {
+      "Resource Type": "activity",
+      "Count": 15,
+      "Simple": 0,
+      "Medium": 9,
+      "Complex": 6
+    },
+    {
+      "Resource Type": "linked_service",
+      "Count": 1,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "pipeline",
+      "Count": 3,
+      "Simple": 0,
+      "Medium": 3,
+      "Complex": 0
+    },
+    {
+      "Resource Type": "trigger",
+      "Count": 1,
+      "Simple": 0,
+      "Medium": 0,
+      "Complex": 0
+    }
+  ],
+  "validation_issue_count": 0,
+  "config": {
+    "pipeline": {
+      "medium_activities": 5,
+      "complex_activities": 15,
+      "medium_parameters": 5,
+      "medium_variables": 5
+    },
+    "activity": {
+      "complex_dependencies": 3,
+      "complex_types": [
+        "ExecutePipeline",
+        "ExecuteDataFlow",
+        "Databricks",
+        "HDInsight",
+        "Custom",
+        "AzureFunction",
+        "WebActivity",
+        "Script"
+      ],
+      "medium_types": [
+        "Lookup",
+        "GetMetadata",
+        "Filter",
+        "ForEach",
+        "Until",
+        "IfCondition",
+        "Switch",
+        "Wait",
+        "SetVariable"
+      ]
+    },
+    "dataflow": {
+      "medium_transformations": 4,
+      "complex_transformations": 10,
+      "complex_script_lines": 200
+    },
+    "dataset": {
+      "medium_schema_columns": 10,
+      "complex_schema_columns": 30
+    }
+  }
+}

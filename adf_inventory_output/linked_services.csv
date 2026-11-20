@@ -1,2 +1,2 @@
-Complexity,Complexity Reason,Linked Service Name,Type,Description,Integration Runtime,Parameter Count,Connection Properties,Annotations
-SIMPLE,simple cloud linked service,,,,AutoResolve,0,,
+﻿Resource Name,Resource Type,Source File,ADF Type,Description,Folder,Annotations,Raw Properties JSON,Integration Runtime,Parameter Count,Connection Properties
+linked_services,linked_service,linkedServices/linked_services.json,,,Root,[],{},AutoResolve,0,{}

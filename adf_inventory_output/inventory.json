@@ -1,477 +1,513 @@
 {
-  "Factory Info": [
-    {
-      "Factory Name": "ADFAccenLulu",
-      "Resource Group": "N/A (from Git)",
-      "Subscription ID": "N/A (from Git)",
-      "Location": "N/A",
-      "State": "N/A (from Git)",
-      "Create Time": "N/A",
-      "Purview Account": "N/A",
-      "Git Config Enabled": "Yes",
-      "Repo Type": "Git (workspace)",
-      "Repo Name": "ADF_Pipelines",
-      "Branch": "main",
-      "Global Parameters": 0,
-      "Public Network Access": "Enabled",
-      "Tags": "{}"
+  "manifest": {
+    "framework_version": "2.0.0",
+    "generated_at": "2026-11-19T15:35:16.517566+00:00",
+    "repository_root": "/filesystem/cc0061016b6c46b87d11986dd1e5b37d6231ed03c8e42b625b82cf1705a95cf5",
+    "detected_adf_roots": [
+      "."
+    ],
+    "resource_file_count": 5,
+    "summary": [
+      {
+        "Resource Type": "activity",
+        "Count": 15,
+        "Simple": 0,
+        "Medium": 9,
+        "Complex": 6
+      },
+      {
+        "Resource Type": "linked_service",
+        "Count": 1,
+        "Simple": 0,
+        "Medium": 0,
+        "Complex": 0
+      },
+      {
+        "Resource Type": "pipeline",
+        "Count": 3,
+        "Simple": 0,
+        "Medium": 3,
+        "Complex": 0
+      },
+      {
+        "Resource Type": "trigger",
+        "Count": 1,
+        "Simple": 0,
+        "Medium": 0,
+        "Complex": 0
+      }
+    ],
+    "validation_issue_count": 0,
+    "config": {
+      "pipeline": {
+        "medium_activities": 5,
+        "complex_activities": 15,
+        "medium_parameters": 5,
+        "medium_variables": 5
+      },
+      "activity": {
+        "complex_dependencies": 3,
+        "complex_types": [
+          "ExecutePipeline",
+          "ExecuteDataFlow",
+          "Databricks",
+          "HDInsight",
+          "Custom",
+          "AzureFunction",
+          "WebActivity",
+          "Script"
+        ],
+        "medium_types": [
+          "Lookup",
+          "GetMetadata",
+          "Filter",
+          "ForEach",
+          "Until",
+          "IfCondition",
+          "Switch",
+          "Wait",
+          "SetVariable"
+        ]
+      },
+      "dataflow": {
+        "medium_transformations": 4,
+        "complex_transformations": 10,
+        "complex_script_lines": 200
+      },
+      "dataset": {
+        "medium_schema_columns": 10,
+        "complex_schema_columns": 30
+      }
     }
-  ],
-  "Pipelines": [
-    {
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple linear pipeline",
-      "Pipeline Name": "pl_data_quality_checks",
-      "Description": "Post-load data quality validation with operator-driven rule evaluation and centralized result logging",
-      "Folder": "Root",
-      "Activity Count": 2,
-      "Activity Types": "ForEach, Lookup",
-      "Parameter Count": 0,
-      "Variable Count": 0,
-      "Concurrency": "N/A",
-      "Annotations": "data-quality, template, validation",
-      "Last Publish Time": "N/A"
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "5 activities (5-14)",
-      "Pipeline Name": "pl_incremental_load",
-      "Description": "Incremental load from source to Snowflake staging via watermark pattern",
-      "Folder": "Root",
-      "Activity Count": 5,
-      "Activity Types": "Copy, Lookup, SqlServerStoredProcedure",
-      "Parameter Count": 2,
-      "Variable Count": 0,
-      "Concurrency": "N/A",
-      "Annotations": "incremental, production, snowflake",
-      "Last Publish Time": "N/A"
-    },
-    {
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple linear pipeline",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Description": "Daily orchestrator pipeline with dependency management, error handling, and alerting",
-      "Folder": "Root",
-      "Activity Count": 4,
-      "Activity Types": "ExecutePipeline, ForEach, Lookup, WebActivity",
-      "Parameter Count": 1,
-      "Variable Count": 0,
-      "Concurrency": "N/A",
-      "Annotations": "orchestrator, production, daily",
-      "Last Publish Time": "N/A"
-    }
-  ],
-  "Activities": [
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout",
-      "Pipeline Name": "pl_data_quality_checks",
-      "Activity Name": "GetDQRules",
-      "Activity Type": "Lookup",
-      "Description": "",
-      "Depends On": "",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "00:05:00",
-      "Policy Retries": 2
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: foreach; 1 dependency",
-      "Pipeline Name": "pl_data_quality_checks",
-      "Activity Name": "ForEachRule",
-      "Activity Type": "ForEach",
-      "Description": "",
-      "Depends On": "GetDQRules",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "",
-      "Policy Retries": ""
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout",
-      "Pipeline Name": "pl_incremental_load",
-      "Activity Name": "LookupLastWatermark",
-      "Activity Type": "Lookup",
-      "Description": "",
-      "Depends On": "",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "00:05:00",
-      "Policy Retries": 2
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout",
-      "Pipeline Name": "pl_incremental_load",
-      "Activity Name": "LookupCurrentWatermark",
-      "Activity Type": "Lookup",
-      "Description": "",
-      "Depends On": "",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "00:05:00",
-      "Policy Retries": 2
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "2 dependency; retries=3; custom timeout",
-      "Pipeline Name": "pl_incremental_load",
-      "Activity Name": "CopyIncrementalData",
-      "Activity Type": "Copy",
-      "Description": "",
-      "Depends On": "LookupLastWatermark, LookupCurrentWatermark",
-      "Input Datasets": "ds_source_db",
-      "Output Datasets": "ds_snowflake_staging",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "01:00:00",
-      "Policy Retries": 3
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "1 dependency; retries=2; custom timeout",
-      "Pipeline Name": "pl_incremental_load",
-      "Activity Name": "UpdateWatermark",
-      "Activity Type": "SqlServerStoredProcedure",
-      "Description": "",
-      "Depends On": "CopyIncrementalData",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "ls_control_db",
-      "Notes": "",
-      "Policy Timeout": "00:05:00",
-      "Policy Retries": 2
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "1 dependency",
-      "Pipeline Name": "pl_incremental_load",
-      "Activity Name": "LogPipelineSuccess",
-      "Activity Type": "SqlServerStoredProcedure",
-      "Description": "",
-      "Depends On": "UpdateWatermark",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "ls_control_db",
-      "Notes": "",
-      "Policy Timeout": "",
-      "Policy Retries": ""
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=1; custom timeout",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Activity Name": "GetPipelineConfig",
-      "Activity Type": "Lookup",
-      "Description": "",
-      "Depends On": "",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "00:05:00",
-      "Policy Retries": 1
-    },
-    {
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: foreach; 1 dependency",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Activity Name": "ForEachPipeline",
-      "Activity Type": "ForEach",
-      "Description": "",
-      "Depends On": "GetPipelineConfig",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "",
-      "Policy Timeout": "",
-      "Policy Retries": ""
-    },
-    {
-      "Complexity": "COMPLEX",
-      "Complexity Reason": "type: executepipeline",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Activity Name": "RunDataQualityChecks",
-      "Activity Type": "ExecutePipeline",
-      "Description": "",
-      "Depends On": "ForEachPipeline",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "calls=pl_data_quality_checks",
-      "Policy Timeout": "",
-      "Policy Retries": ""
-    },
-    {
-      "Complexity": "COMPLEX",
-      "Complexity Reason": "type: webactivity",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Activity Name": "OnFailure_SendAlert",
-      "Activity Type": "WebActivity",
-      "Description": "",
-      "Depends On": "ForEachPipeline",
-      "Input Datasets": "",
-      "Output Datasets": "",
-      "Linked Service": "",
-      "Notes": "url=@{pipeline().parameters.alert_webhook_url}",
-      "Policy Timeout": "",
-      "Policy Retries": ""
-    }
-  ],
-  "Data Flows": [],
-  "Flowlets": [
-    {
-      "Note": "No Flowlets found in this factory."
-    }
-  ],
-  "Datasets": [],
-  "Linked Services": [
-    {
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple cloud linked service",
-      "Linked Service Name": null,
-      "Type": "",
-      "Description": "",
-      "Integration Runtime": "AutoResolve",
-      "Parameter Count": 0,
-      "Connection Properties": "",
-      "Annotations": ""
-    }
-  ],
-  "Integration Runtimes": [],
-  "Triggers": [
-    {
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple schedule trigger",
-      "Trigger Name": "tr_daily_0600_utc",
-      "Type": "ScheduleTrigger",
-      "Description": "",
-      "Runtime State": "N/A",
-      "Schedule": "Every 1 Day",
-      "Start Time": "2025-01-01 06:00:00",
-      "End Time": "N/A",
-      "Timezone": "UTC",
-      "Pipeline Count": 1,
-      "Pipelines": "pl_orchestrator_daily",
-      "Annotations": "daily, template, orchestration"
-    }
-  ],
-  "Parameters": [
-    {
-      "Scope": "Pipeline",
-      "Pipeline Name": "pl_incremental_load",
-      "Parameter Name": "source_table",
-      "Type": "String",
-      "Default Value": "",
-      "Description": ""
-    },
-    {
-      "Scope": "Pipeline",
-      "Pipeline Name": "pl_incremental_load",
-      "Parameter Name": "watermark_column",
-      "Type": "String",
-      "Default Value": "modified_date",
-      "Description": ""
-    },
-    {
-      "Scope": "Pipeline",
-      "Pipeline Name": "pl_orchestrator_daily",
-      "Parameter Name": "alert_webhook_url",
-      "Type": "String",
-      "Default Value": "",
-      "Description": ""
-    }
-  ],
-  "Variables": [
-    {
-      "Note": "No pipeline variables found."
-    }
-  ],
-  "Summary": [
-    {
-      "Resource Type": "Factory Info",
-      "Count": 1,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Pipelines",
-      "Count": 3,
-      "Simple": 2,
-      "Medium": 1,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Activities",
-      "Count": 11,
-      "Simple": 0,
-      "Medium": 9,
-      "Complex": 2
-    },
-    {
-      "Resource Type": "Data Flows",
-      "Count": 0,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Flowlets",
-      "Count": 1,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Datasets",
-      "Count": 0,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Linked Services",
-      "Count": 1,
-      "Simple": 1,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Integration Runtimes",
-      "Count": 0,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Triggers",
-      "Count": 1,
-      "Simple": 1,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Parameters",
-      "Count": 3,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    },
-    {
-      "Resource Type": "Variables",
-      "Count": 1,
-      "Simple": 0,
-      "Medium": 0,
-      "Complex": 0
-    }
-  ],
-  "Classification Overview": [
-    {
-      "Resource Type": "Pipelines",
-      "Name / ID": "pl_data_quality_checks",
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple linear pipeline"
-    },
-    {
-      "Resource Type": "Pipelines",
-      "Name / ID": "pl_incremental_load",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "5 activities (5-14)"
-    },
-    {
-      "Resource Type": "Pipelines",
-      "Name / ID": "pl_orchestrator_daily",
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple linear pipeline"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "GetDQRules",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "ForEachRule",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: foreach; 1 dependency"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "LookupLastWatermark",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "LookupCurrentWatermark",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=2; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "CopyIncrementalData",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "2 dependency; retries=3; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "UpdateWatermark",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "1 dependency; retries=2; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "LogPipelineSuccess",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "1 dependency"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "GetPipelineConfig",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: lookup; retries=1; custom timeout"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "ForEachPipeline",
-      "Complexity": "MEDIUM",
-      "Complexity Reason": "type: foreach; 1 dependency"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "RunDataQualityChecks",
-      "Complexity": "COMPLEX",
-      "Complexity Reason": "type: executepipeline"
-    },
-    {
-      "Resource Type": "Activities",
-      "Name / ID": "OnFailure_SendAlert",
-      "Complexity": "COMPLEX",
-      "Complexity Reason": "type: webactivity"
-    },
-    {
-      "Resource Type": "Linked Services",
-      "Name / ID": "",
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple cloud linked service"
-    },
-    {
-      "Resource Type": "Triggers",
-      "Name / ID": "tr_daily_0600_utc",
-      "Complexity": "SIMPLE",
-      "Complexity Reason": "simple schedule trigger"
-    }
-  ]
+  },
+  "resources": {
+    "linked_service": [
+      {
+        "Resource Name": "linked_services",
+        "Resource Type": "linked_service",
+        "Source File": "linkedServices/linked_services.json",
+        "ADF Type": "",
+        "Description": "",
+        "Folder": "Root",
+        "Annotations": "[]",
+        "Raw Properties JSON": "{}",
+        "Integration Runtime": "AutoResolve",
+        "Parameter Count": 0,
+        "Connection Properties": "{}"
+      }
+    ],
+    "pipeline": [
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "5 activities",
+        "Resource Name": "pl_data_quality_checks",
+        "Resource Type": "pipeline",
+        "Source File": "pipelines/pl_data_quality_checks.json",
+        "ADF Type": "",
+        "Description": "Post-load data quality validation with operator-driven rule evaluation and centralized result logging",
+        "Folder": "Root",
+        "Annotations": "[\"data-quality\", \"template\", \"validation\"]",
+        "Raw Properties JSON": "{\"description\": \"Post-load data quality validation with operator-driven rule evaluation and centralized result logging\", \"activities\": [{\"name\": \"GetDQRules\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:05:00\", \"retry\": 2, \"retryIntervalInSeconds\": 30}, \"typeProperties\": {\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT rule_id, table_name, check_type, comparison_operator, threshold, query, severity FROM control.dq_rules WHERE is_active = 1 ORDER BY table_name, rule_id\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": false}}, {\"name\": \"ForEachRule\", \"type\": \"ForEach\", \"dependsOn\": [{\"activity\": \"GetDQRules\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"isSequential\": false, \"batchCount\": 8, \"items\": {\"value\": \"@activity('GetDQRules').output.value\", \"type\": \"Expression\"}, \"activities\": [{\"name\": \"RunDQCheck\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:10:00\", \"retry\": 2, \"retryIntervalInSeconds\": 30}, \"typeProperties\": {\"source\": {\"type\": \"SnowflakeSource\", \"query\": \"@{item().query}\"}, \"dataset\": {\"referenceName\": \"ds_snowflake_staging\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": true}}, {\"name\": \"LogDQResult\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"RunDQCheck\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"storedProcedureName\": \"control.usp_evaluate_dq_result\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"result_value\": {\"value\": \"@{string(activity('RunDQCheck').output.firstRow.result)}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}, {\"name\": \"LogDQFailure\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"RunDQCheck\", \"dependencyConditions\": [\"Failed\"]}], \"typeProperties\": {\"storedProcedureName\": \"control.usp_log_dq_failure\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"error_message\": {\"value\": \"@{string(activity('RunDQCheck').error.message)}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}]}}], \"annotations\": [\"data-quality\", \"template\", \"validation\"]}",
+        "Activity Count": 5,
+        "Top-level Activity Count": 2,
+        "Max Nesting Depth": 1,
+        "Activity Types": "ForEach:1, Lookup:2, SqlServerStoredProcedure:2",
+        "Parameter Count": 0,
+        "Variable Count": 0,
+        "Concurrency": ""
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "5 activities",
+        "Resource Name": "pl_incremental_load",
+        "Resource Type": "pipeline",
+        "Source File": "pipelines/pl_incremental_load.json",
+        "ADF Type": "",
+        "Description": "Incremental load from source to Snowflake staging via watermark pattern",
+        "Folder": "Root",
+        "Annotations": "[\"incremental\", \"production\", \"snowflake\"]",
+        "Raw Properties JSON": "{\"description\": \"Incremental load from source to Snowflake staging via watermark pattern\", \"activities\": [{\"name\": \"LookupLastWatermark\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:05:00\", \"retry\": 2, \"retryIntervalInSeconds\": 30}, \"typeProperties\": {\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT watermark_value FROM control.watermark_table WHERE table_name = '@{pipeline().parameters.source_table}'\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}}}, {\"name\": \"LookupCurrentWatermark\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:05:00\", \"retry\": 2, \"retryIntervalInSeconds\": 30}, \"typeProperties\": {\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT MAX(@{pipeline().parameters.watermark_column}) AS current_watermark FROM @{pipeline().parameters.source_table}\"}, \"dataset\": {\"referenceName\": \"ds_source_db\", \"type\": \"DatasetReference\"}}}, {\"name\": \"CopyIncrementalData\", \"type\": \"Copy\", \"dependsOn\": [{\"activity\": \"LookupLastWatermark\", \"dependencyConditions\": [\"Succeeded\"]}, {\"activity\": \"LookupCurrentWatermark\", \"dependencyConditions\": [\"Succeeded\"]}], \"policy\": {\"timeout\": \"01:00:00\", \"retry\": 3, \"retryIntervalInSeconds\": 60}, \"typeProperties\": {\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT * FROM @{pipeline().parameters.source_table} WHERE @{pipeline().parameters.watermark_column} > '@{activity('LookupLastWatermark').output.firstRow.watermark_value}' AND @{pipeline().parameters.watermark_column} <= '@{activity('LookupCurrentWatermark').output.firstRow.current_watermark}'\"}, \"sink\": {\"type\": \"SnowflakeSink\", \"importSettings\": {\"type\": \"SnowflakeImportCopyCommand\"}}, \"enableStaging\": true, \"stagingSettings\": {\"linkedServiceName\": {\"referenceName\": \"ls_adls_staging\", \"type\": \"LinkedServiceReference\"}, \"path\": \"staging/incremental\"}}, \"inputs\": [{\"referenceName\": \"ds_source_db\", \"type\": \"DatasetReference\"}], \"outputs\": [{\"referenceName\": \"ds_snowflake_staging\", \"type\": \"DatasetReference\"}]}, {\"name\": \"UpdateWatermark\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"CopyIncrementalData\", \"dependencyConditions\": [\"Succeeded\"]}], \"policy\": {\"timeout\": \"00:05:00\", \"retry\": 2}, \"typeProperties\": {\"storedProcedureName\": \"control.usp_update_watermark\", \"storedProcedureParameters\": {\"table_name\": {\"value\": \"@{pipeline().parameters.source_table}\", \"type\": \"String\"}, \"watermark_value\": {\"value\": \"@{activity('LookupCurrentWatermark').output.firstRow.current_watermark}\", \"type\": \"String\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}, {\"name\": \"LogPipelineSuccess\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"UpdateWatermark\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"storedProcedureName\": \"control.usp_log_pipeline_run\", \"storedProcedureParameters\": {\"pipeline_name\": {\"value\": \"@{pipeline().Pipeline}\", \"type\": \"String\"}, \"run_id\": {\"value\": \"@{pipeline().RunId}\", \"type\": \"String\"}, \"status\": {\"value\": \"Success\", \"type\": \"String\"}, \"rows_copied\": {\"value\": \"@{activity('CopyIncrementalData').output.rowsCopied}\", \"type\": \"Int32\"}, \"duration_seconds\": {\"value\": \"@{activity('CopyIncrementalData').output.copyDuration}\", \"type\": \"Int32\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}], \"parameters\": {\"source_table\": {\"type\": \"String\"}, \"watermark_column\": {\"type\": \"String\", \"defaultValue\": \"modified_date\"}}, \"annotations\": [\"incremental\", \"production\", \"snowflake\"]}",
+        "Activity Count": 5,
+        "Top-level Activity Count": 5,
+        "Max Nesting Depth": 0,
+        "Activity Types": "Copy:1, Lookup:2, SqlServerStoredProcedure:2",
+        "Parameter Count": 2,
+        "Variable Count": 0,
+        "Concurrency": ""
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "5 activities",
+        "Resource Name": "pl_orchestrator_daily",
+        "Resource Type": "pipeline",
+        "Source File": "pipelines/pl_orchestrator_daily.json",
+        "ADF Type": "",
+        "Description": "Daily orchestrator pipeline with dependency management, error handling, and alerting",
+        "Folder": "Root",
+        "Annotations": "[\"orchestrator\", \"production\", \"daily\"]",
+        "Raw Properties JSON": "{\"description\": \"Daily orchestrator pipeline with dependency management, error handling, and alerting\", \"activities\": [{\"name\": \"GetPipelineConfig\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:05:00\", \"retry\": 1}, \"typeProperties\": {\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT pipeline_name, source_table, watermark_column, priority, is_enabled FROM control.pipeline_config WHERE is_enabled = 1 ORDER BY priority\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": false}}, {\"name\": \"ForEachPipeline\", \"type\": \"ForEach\", \"dependsOn\": [{\"activity\": \"GetPipelineConfig\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"isSequential\": false, \"batchCount\": 4, \"items\": {\"value\": \"@activity('GetPipelineConfig').output.value\", \"type\": \"Expression\"}, \"activities\": [{\"name\": \"ExecuteIncrementalLoad\", \"type\": \"ExecutePipeline\", \"typeProperties\": {\"pipeline\": {\"referenceName\": \"pl_incremental_load\", \"type\": \"PipelineReference\"}, \"parameters\": {\"source_table\": \"@{item().source_table}\", \"watermark_column\": \"@{item().watermark_column}\"}, \"waitOnCompletion\": true}}]}}, {\"name\": \"RunDataQualityChecks\", \"type\": \"ExecutePipeline\", \"dependsOn\": [{\"activity\": \"ForEachPipeline\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"pipeline\": {\"referenceName\": \"pl_data_quality_checks\", \"type\": \"PipelineReference\"}, \"waitOnCompletion\": true}}, {\"name\": \"OnFailure_SendAlert\", \"type\": \"WebActivity\", \"dependsOn\": [{\"activity\": \"ForEachPipeline\", \"dependencyConditions\": [\"Failed\"]}], \"typeProperties\": {\"url\": \"@{pipeline().parameters.alert_webhook_url}\", \"method\": \"POST\", \"body\": {\"pipeline\": \"@{pipeline().Pipeline}\", \"run_id\": \"@{pipeline().RunId}\", \"status\": \"Failed\", \"timestamp\": \"@{utcnow()}\", \"message\": \"Daily orchestrator pipeline failed. Check ADF monitor for details.\"}}}], \"parameters\": {\"alert_webhook_url\": {\"type\": \"String\"}}, \"annotations\": [\"orchestrator\", \"production\", \"daily\"]}",
+        "Activity Count": 5,
+        "Top-level Activity Count": 4,
+        "Max Nesting Depth": 1,
+        "Activity Types": "ExecutePipeline:2, ForEach:1, Lookup:1, WebActivity:1",
+        "Parameter Count": 1,
+        "Variable Count": 0,
+        "Concurrency": ""
+      }
+    ],
+    "trigger": [
+      {
+        "Resource Name": "tr_daily_0600_utc",
+        "Resource Type": "trigger",
+        "Source File": "triggers/tr_daily_0600_utc.json",
+        "ADF Type": "ScheduleTrigger",
+        "Description": "",
+        "Folder": "Root",
+        "Annotations": "[\"daily\", \"template\", \"orchestration\"]",
+        "Raw Properties JSON": "{\"type\": \"ScheduleTrigger\", \"typeProperties\": {\"recurrence\": {\"frequency\": \"Day\", \"interval\": 1, \"startTime\": \"2025-01-01T06:00:00Z\", \"timeZone\": \"UTC\"}}, \"pipelines\": [{\"pipelineReference\": {\"referenceName\": \"pl_orchestrator_daily\", \"type\": \"PipelineReference\"}, \"parameters\": {\"alert_webhook_url\": \"<alert_webhook_url>\"}}], \"annotations\": [\"daily\", \"template\", \"orchestration\"]}",
+        "Runtime State": "",
+        "Frequency": "Day",
+        "Interval": 1,
+        "Time Zone": "UTC",
+        "Pipeline Count": 1,
+        "Pipelines": "pl_orchestrator_daily"
+      }
+    ],
+    "activity": [
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "type=Lookup",
+        "Pipeline Name": "pl_data_quality_checks",
+        "Activity Name": "GetDQRules",
+        "Activity Path": "GetDQRules",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "Lookup",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 0,
+        "Policy Timeout": "00:05:00",
+        "Policy Retries": 2,
+        "Type Properties JSON": "{\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT rule_id, table_name, check_type, comparison_operator, threshold, query, severity FROM control.dq_rules WHERE is_active = 1 ORDER BY table_name, rule_id\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": false}",
+        "Source File": "pipelines/pl_data_quality_checks.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 4,
+        "Complexity Reason": "type=ForEach; 1 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_data_quality_checks",
+        "Activity Name": "ForEachRule",
+        "Activity Path": "ForEachRule",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "ForEach",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "GetDQRules",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 18,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"isSequential\": false, \"batchCount\": 8, \"items\": {\"value\": \"@activity('GetDQRules').output.value\", \"type\": \"Expression\"}, \"activities\": [{\"name\": \"RunDQCheck\", \"type\": \"Lookup\", \"dependsOn\": [], \"policy\": {\"timeout\": \"00:10:00\", \"retry\": 2, \"retryIntervalInSeconds\": 30}, \"typeProperties\": {\"source\": {\"type\": \"SnowflakeSource\", \"query\": \"@{item().query}\"}, \"dataset\": {\"referenceName\": \"ds_snowflake_staging\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": true}}, {\"name\": \"LogDQResult\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"RunDQCheck\", \"dependencyConditions\": [\"Succeeded\"]}], \"typeProperties\": {\"storedProcedureName\": \"control.usp_evaluate_dq_result\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"result_value\": {\"value\": \"@{string(activity('RunDQCheck').output.firstRow.result)}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}, {\"name\": \"LogDQFailure\", \"type\": \"SqlServerStoredProcedure\", \"dependsOn\": [{\"activity\": \"RunDQCheck\", \"dependencyConditions\": [\"Failed\"]}], \"typeProperties\": {\"storedProcedureName\": \"control.usp_log_dq_failure\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"error_message\": {\"value\": \"@{string(activity('RunDQCheck').error.message)}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}, \"linkedServiceName\": {\"referenceName\": \"ls_control_db\", \"type\": \"LinkedServiceReference\"}}]}",
+        "Source File": "pipelines/pl_data_quality_checks.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 4,
+        "Complexity Reason": "type=Lookup; nested depth 1; dynamic expressions",
+        "Pipeline Name": "pl_data_quality_checks",
+        "Activity Name": "RunDQCheck",
+        "Activity Path": "ForEachRule[activities]/RunDQCheck",
+        "Parent Activity": "ForEachRule",
+        "Nesting Depth": 1,
+        "Activity Type": "Lookup",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 1,
+        "Policy Timeout": "00:10:00",
+        "Policy Retries": 2,
+        "Type Properties JSON": "{\"source\": {\"type\": \"SnowflakeSource\", \"query\": \"@{item().query}\"}, \"dataset\": {\"referenceName\": \"ds_snowflake_staging\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": true}",
+        "Source File": "pipelines/pl_data_quality_checks.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 3,
+        "Complexity Reason": "1 dependencies; nested depth 1; dynamic expressions",
+        "Pipeline Name": "pl_data_quality_checks",
+        "Activity Name": "LogDQResult",
+        "Activity Path": "ForEachRule[activities]/LogDQResult",
+        "Parent Activity": "ForEachRule",
+        "Nesting Depth": 1,
+        "Activity Type": "SqlServerStoredProcedure",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "RunDQCheck",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "ls_control_db",
+        "Dynamic Expression Count": 8,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"storedProcedureName\": \"control.usp_evaluate_dq_result\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"result_value\": {\"value\": \"@{string(activity('RunDQCheck').output.firstRow.result)}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}",
+        "Source File": "pipelines/pl_data_quality_checks.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 3,
+        "Complexity Reason": "1 dependencies; nested depth 1; dynamic expressions",
+        "Pipeline Name": "pl_data_quality_checks",
+        "Activity Name": "LogDQFailure",
+        "Activity Path": "ForEachRule[activities]/LogDQFailure",
+        "Parent Activity": "ForEachRule",
+        "Nesting Depth": 1,
+        "Activity Type": "SqlServerStoredProcedure",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "RunDQCheck",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "ls_control_db",
+        "Dynamic Expression Count": 8,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"storedProcedureName\": \"control.usp_log_dq_failure\", \"storedProcedureParameters\": {\"rule_id\": {\"value\": \"@{item().rule_id}\", \"type\": \"Int32\"}, \"table_name\": {\"value\": \"@{item().table_name}\", \"type\": \"String\"}, \"check_type\": {\"value\": \"@{item().check_type}\", \"type\": \"String\"}, \"comparison_operator\": {\"value\": \"@{item().comparison_operator}\", \"type\": \"String\"}, \"threshold\": {\"value\": \"@{item().threshold}\", \"type\": \"String\"}, \"severity\": {\"value\": \"@{item().severity}\", \"type\": \"String\"}, \"error_message\": {\"value\": \"@{string(activity('RunDQCheck').error.message)}\", \"type\": \"String\"}, \"run_timestamp\": {\"value\": \"@{utcnow()}\", \"type\": \"String\"}}}",
+        "Source File": "pipelines/pl_data_quality_checks.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 3,
+        "Complexity Reason": "type=Lookup; dynamic expressions",
+        "Pipeline Name": "pl_incremental_load",
+        "Activity Name": "LookupLastWatermark",
+        "Activity Path": "LookupLastWatermark",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "Lookup",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 1,
+        "Policy Timeout": "00:05:00",
+        "Policy Retries": 2,
+        "Type Properties JSON": "{\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT watermark_value FROM control.watermark_table WHERE table_name = '@{pipeline().parameters.source_table}'\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}}",
+        "Source File": "pipelines/pl_incremental_load.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 3,
+        "Complexity Reason": "type=Lookup; dynamic expressions",
+        "Pipeline Name": "pl_incremental_load",
+        "Activity Name": "LookupCurrentWatermark",
+        "Activity Path": "LookupCurrentWatermark",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "Lookup",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 2,
+        "Policy Timeout": "00:05:00",
+        "Policy Retries": 2,
+        "Type Properties JSON": "{\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT MAX(@{pipeline().parameters.watermark_column}) AS current_watermark FROM @{pipeline().parameters.source_table}\"}, \"dataset\": {\"referenceName\": \"ds_source_db\", \"type\": \"DatasetReference\"}}",
+        "Source File": "pipelines/pl_incremental_load.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "2 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_incremental_load",
+        "Activity Name": "CopyIncrementalData",
+        "Activity Path": "CopyIncrementalData",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "Copy",
+        "Description": "",
+        "Dependency Count": 2,
+        "Depends On": "LookupLastWatermark, LookupCurrentWatermark",
+        "Input Datasets": "ds_source_db",
+        "Output Datasets": "ds_snowflake_staging",
+        "Linked Service": "",
+        "Dynamic Expression Count": 5,
+        "Policy Timeout": "01:00:00",
+        "Policy Retries": 3,
+        "Type Properties JSON": "{\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT * FROM @{pipeline().parameters.source_table} WHERE @{pipeline().parameters.watermark_column} > '@{activity('LookupLastWatermark').output.firstRow.watermark_value}' AND @{pipeline().parameters.watermark_column} <= '@{activity('LookupCurrentWatermark').output.firstRow.current_watermark}'\"}, \"sink\": {\"type\": \"SnowflakeSink\", \"importSettings\": {\"type\": \"SnowflakeImportCopyCommand\"}}, \"enableStaging\": true, \"stagingSettings\": {\"linkedServiceName\": {\"referenceName\": \"ls_adls_staging\", \"type\": \"LinkedServiceReference\"}, \"path\": \"staging/incremental\"}}",
+        "Source File": "pipelines/pl_incremental_load.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "1 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_incremental_load",
+        "Activity Name": "UpdateWatermark",
+        "Activity Path": "UpdateWatermark",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "SqlServerStoredProcedure",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "CopyIncrementalData",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "ls_control_db",
+        "Dynamic Expression Count": 2,
+        "Policy Timeout": "00:05:00",
+        "Policy Retries": 2,
+        "Type Properties JSON": "{\"storedProcedureName\": \"control.usp_update_watermark\", \"storedProcedureParameters\": {\"table_name\": {\"value\": \"@{pipeline().parameters.source_table}\", \"type\": \"String\"}, \"watermark_value\": {\"value\": \"@{activity('LookupCurrentWatermark').output.firstRow.current_watermark}\", \"type\": \"String\"}}}",
+        "Source File": "pipelines/pl_incremental_load.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "1 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_incremental_load",
+        "Activity Name": "LogPipelineSuccess",
+        "Activity Path": "LogPipelineSuccess",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "SqlServerStoredProcedure",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "UpdateWatermark",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "ls_control_db",
+        "Dynamic Expression Count": 4,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"storedProcedureName\": \"control.usp_log_pipeline_run\", \"storedProcedureParameters\": {\"pipeline_name\": {\"value\": \"@{pipeline().Pipeline}\", \"type\": \"String\"}, \"run_id\": {\"value\": \"@{pipeline().RunId}\", \"type\": \"String\"}, \"status\": {\"value\": \"Success\", \"type\": \"String\"}, \"rows_copied\": {\"value\": \"@{activity('CopyIncrementalData').output.rowsCopied}\", \"type\": \"Int32\"}, \"duration_seconds\": {\"value\": \"@{activity('CopyIncrementalData').output.copyDuration}\", \"type\": \"Int32\"}}}",
+        "Source File": "pipelines/pl_incremental_load.json"
+      },
+      {
+        "Complexity": "MEDIUM",
+        "Complexity Score": 2,
+        "Complexity Reason": "type=Lookup",
+        "Pipeline Name": "pl_orchestrator_daily",
+        "Activity Name": "GetPipelineConfig",
+        "Activity Path": "GetPipelineConfig",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "Lookup",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 0,
+        "Policy Timeout": "00:05:00",
+        "Policy Retries": 1,
+        "Type Properties JSON": "{\"source\": {\"type\": \"AzureSqlSource\", \"sqlReaderQuery\": \"SELECT pipeline_name, source_table, watermark_column, priority, is_enabled FROM control.pipeline_config WHERE is_enabled = 1 ORDER BY priority\"}, \"dataset\": {\"referenceName\": \"ds_control_db\", \"type\": \"DatasetReference\"}, \"firstRowOnly\": false}",
+        "Source File": "pipelines/pl_orchestrator_daily.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 4,
+        "Complexity Reason": "type=ForEach; 1 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_orchestrator_daily",
+        "Activity Name": "ForEachPipeline",
+        "Activity Path": "ForEachPipeline",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "ForEach",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "GetPipelineConfig",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 3,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"isSequential\": false, \"batchCount\": 4, \"items\": {\"value\": \"@activity('GetPipelineConfig').output.value\", \"type\": \"Expression\"}, \"activities\": [{\"name\": \"ExecuteIncrementalLoad\", \"type\": \"ExecutePipeline\", \"typeProperties\": {\"pipeline\": {\"referenceName\": \"pl_incremental_load\", \"type\": \"PipelineReference\"}, \"parameters\": {\"source_table\": \"@{item().source_table}\", \"watermark_column\": \"@{item().watermark_column}\"}, \"waitOnCompletion\": true}}]}",
+        "Source File": "pipelines/pl_orchestrator_daily.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 6,
+        "Complexity Reason": "type=ExecutePipeline; nested depth 1; dynamic expressions",
+        "Pipeline Name": "pl_orchestrator_daily",
+        "Activity Name": "ExecuteIncrementalLoad",
+        "Activity Path": "ForEachPipeline[activities]/ExecuteIncrementalLoad",
+        "Parent Activity": "ForEachPipeline",
+        "Nesting Depth": 1,
+        "Activity Type": "ExecutePipeline",
+        "Description": "",
+        "Dependency Count": 0,
+        "Depends On": "",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 2,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"pipeline\": {\"referenceName\": \"pl_incremental_load\", \"type\": \"PipelineReference\"}, \"parameters\": {\"source_table\": \"@{item().source_table}\", \"watermark_column\": \"@{item().watermark_column}\"}, \"waitOnCompletion\": true}",
+        "Source File": "pipelines/pl_orchestrator_daily.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 5,
+        "Complexity Reason": "type=ExecutePipeline; 1 dependencies",
+        "Pipeline Name": "pl_orchestrator_daily",
+        "Activity Name": "RunDataQualityChecks",
+        "Activity Path": "RunDataQualityChecks",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "ExecutePipeline",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "ForEachPipeline",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 0,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"pipeline\": {\"referenceName\": \"pl_data_quality_checks\", \"type\": \"PipelineReference\"}, \"waitOnCompletion\": true}",
+        "Source File": "pipelines/pl_orchestrator_daily.json"
+      },
+      {
+        "Complexity": "COMPLEX",
+        "Complexity Score": 6,
+        "Complexity Reason": "type=WebActivity; 1 dependencies; dynamic expressions",
+        "Pipeline Name": "pl_orchestrator_daily",
+        "Activity Name": "OnFailure_SendAlert",
+        "Activity Path": "OnFailure_SendAlert",
+        "Parent Activity": "",
+        "Nesting Depth": 0,
+        "Activity Type": "WebActivity",
+        "Description": "",
+        "Dependency Count": 1,
+        "Depends On": "ForEachPipeline",
+        "Input Datasets": "",
+        "Output Datasets": "",
+        "Linked Service": "",
+        "Dynamic Expression Count": 4,
+        "Policy Timeout": "",
+        "Policy Retries": "",
+        "Type Properties JSON": "{\"url\": \"@{pipeline().parameters.alert_webhook_url}\", \"method\": \"POST\", \"body\": {\"pipeline\": \"@{pipeline().Pipeline}\", \"run_id\": \"@{pipeline().RunId}\", \"status\": \"Failed\", \"timestamp\": \"@{utcnow()}\", \"message\": \"Daily orchestrator pipeline failed. Check ADF monitor for details.\"}}",
+        "Source File": "pipelines/pl_orchestrator_daily.json"
+      }
+    ]
+  },
+  "validation_issues": []
 }
